@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_public/login')({
 
 function RouteComponent() {
   return (
-    <div className='w-1/3 self-center'>
+    <div className='w-1/3 self-center mt-24'>
       <Card className='py-5'>
         <CardHeader className='text-center mb-4'>
           <CardTitle className='text-xl'>Welcome Back</CardTitle>

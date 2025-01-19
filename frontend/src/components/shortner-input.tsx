@@ -10,7 +10,7 @@ const ShortnerInput = () => (
       className='h-full border-none focus-visible:ring-0'
     />
     <Button size='lg' className='px-4'>
-      Short Now!
+      Shorten Now!
     </Button>
   </div>
 )

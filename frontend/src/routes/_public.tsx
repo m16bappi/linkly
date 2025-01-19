@@ -1,3 +1,4 @@
+import Footer from '@/components/footer'
 import Logo from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
@@ -26,17 +27,12 @@ function RouteComponent() {
       </div>
 
       {/* Middle - Outlet */}
-      <div className='flex-grow w-full flex flex-col justify-center'>
+      <div className='flex-grow w-full flex flex-col'>
         <Outlet />
       </div>
 
       {/* Footer */}
-      <div className='text-center py-4'>
-        <span className='font-bold bg-gradient-to-r from-blue-500 to-rose-500 text-transparent bg-clip-text'>
-          Linkly
-        </span>{' '}
-        | 2025
-      </div>
+      <Footer />
     </div>
   )
 }

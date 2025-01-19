@@ -13,7 +13,7 @@ type DataTableProps<TData> = {
 
 function DataTable<TData>({ rows, headers }: DataTableProps<TData>) {
   return (
-    <div className='border rounded-xl'>
+    <div className='border rounded-xl overflow-hidden'>
       <Table>
         <TableHeader className='bg-border'>
           <TableRow>

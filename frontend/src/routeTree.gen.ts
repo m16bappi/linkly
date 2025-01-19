@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PublicImport } from './routes/_public'
+import { Route as UserIdLayoutImport } from './routes/$userId/layout'
 import { Route as PublicIndexImport } from './routes/_public/index'
 import { Route as UserIdIndexImport } from './routes/$userId/index'
 import { Route as PublicRegisterImport } from './routes/_public/register'
@@ -24,6 +25,12 @@ const PublicRoute = PublicImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const UserIdLayoutRoute = UserIdLayoutImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PublicIndexRoute = PublicIndexImport.update({
   id: '/',
   path: '/',
@@ -31,9 +38,9 @@ const PublicIndexRoute = PublicIndexImport.update({
 } as any)
 
 const UserIdIndexRoute = UserIdIndexImport.update({
-  id: '/$userId/',
-  path: '/$userId/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserIdLayoutRoute,
 } as any)
 
 const PublicRegisterRoute = PublicRegisterImport.update({
@@ -52,6 +59,13 @@ const PublicLoginRoute = PublicLoginImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/$userId': {
+      id: '/$userId'
+      path: '/$userId'
+      fullPath: '/$userId'
+      preLoaderRoute: typeof UserIdLayoutImport
+      parentRoute: typeof rootRoute
+    }
     '/_public': {
       id: '/_public'
       path: ''
@@ -75,10 +89,10 @@ declare module '@tanstack/react-router' {
     }
     '/$userId/': {
       id: '/$userId/'
-      path: '/$userId'
-      fullPath: '/$userId'
+      path: '/'
+      fullPath: '/$userId/'
       preLoaderRoute: typeof UserIdIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof UserIdLayoutImport
     }
     '/_public/': {
       id: '/_public/'
@@ -91,6 +105,18 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
+
+interface UserIdLayoutRouteChildren {
+  UserIdIndexRoute: typeof UserIdIndexRoute
+}
+
+const UserIdLayoutRouteChildren: UserIdLayoutRouteChildren = {
+  UserIdIndexRoute: UserIdIndexRoute,
+}
+
+const UserIdLayoutRouteWithChildren = UserIdLayoutRoute._addFileChildren(
+  UserIdLayoutRouteChildren,
+)
 
 interface PublicRouteChildren {
   PublicLoginRoute: typeof PublicLoginRoute
@@ -108,10 +134,11 @@ const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
 export interface FileRoutesByFullPath {
+  '/$userId': typeof UserIdLayoutRouteWithChildren
   '': typeof PublicRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
-  '/$userId': typeof UserIdIndexRoute
+  '/$userId/': typeof UserIdIndexRoute
   '/': typeof PublicIndexRoute
 }
 
@@ -124,6 +151,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/$userId': typeof UserIdLayoutRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_public/login': typeof PublicLoginRoute
   '/_public/register': typeof PublicRegisterRoute
@@ -133,11 +161,12 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/register' | '/$userId' | '/'
+  fullPaths: '/$userId' | '' | '/login' | '/register' | '/$userId/' | '/'
   fileRoutesByTo: FileRoutesByTo
   to: '/login' | '/register' | '/$userId' | '/'
   id:
     | '__root__'
+    | '/$userId'
     | '/_public'
     | '/_public/login'
     | '/_public/register'
@@ -147,13 +176,13 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  UserIdLayoutRoute: typeof UserIdLayoutRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
-  UserIdIndexRoute: typeof UserIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  UserIdLayoutRoute: UserIdLayoutRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
-  UserIdIndexRoute: UserIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -166,7 +195,13 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/_public",
+        "/$userId",
+        "/_public"
+      ]
+    },
+    "/$userId": {
+      "filePath": "$userId/layout.tsx",
+      "children": [
         "/$userId/"
       ]
     },
@@ -187,7 +222,8 @@ export const routeTree = rootRoute
       "parent": "/_public"
     },
     "/$userId/": {
-      "filePath": "$userId/index.tsx"
+      "filePath": "$userId/index.tsx",
+      "parent": "/$userId"
     },
     "/_public/": {
       "filePath": "_public/index.tsx",
