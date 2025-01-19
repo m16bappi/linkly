@@ -101,7 +101,7 @@ const rows: Row[] = [
 function RouteComponent() {
   return (
     <>
-      <div className='mt-40 text-center'>
+      <div className='text-center'>
         <div className='font-extrabold text-7xl bg-gradient-to-r from-blue-700 via-rose-400 to-blue-700 text-transparent bg-clip-text'>
           Shorten Your Loooong Links :)
         </div>

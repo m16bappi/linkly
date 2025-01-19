@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as PublicImport } from './routes/_public'
 import { Route as PublicIndexImport } from './routes/_public/index'
 import { Route as UserIdIndexImport } from './routes/$userId/index'
+import { Route as PublicRegisterImport } from './routes/_public/register'
 import { Route as PublicLoginImport } from './routes/_public/login'
 
 // Create/Update Routes
@@ -33,6 +34,12 @@ const UserIdIndexRoute = UserIdIndexImport.update({
   id: '/$userId/',
   path: '/$userId/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const PublicRegisterRoute = PublicRegisterImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => PublicRoute,
 } as any)
 
 const PublicLoginRoute = PublicLoginImport.update({
@@ -59,6 +66,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginImport
       parentRoute: typeof PublicImport
     }
+    '/_public/register': {
+      id: '/_public/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof PublicRegisterImport
+      parentRoute: typeof PublicImport
+    }
     '/$userId/': {
       id: '/$userId/'
       path: '/$userId'
@@ -80,11 +94,13 @@ declare module '@tanstack/react-router' {
 
 interface PublicRouteChildren {
   PublicLoginRoute: typeof PublicLoginRoute
+  PublicRegisterRoute: typeof PublicRegisterRoute
   PublicIndexRoute: typeof PublicIndexRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicLoginRoute: PublicLoginRoute,
+  PublicRegisterRoute: PublicRegisterRoute,
   PublicIndexRoute: PublicIndexRoute,
 }
 
@@ -94,12 +110,14 @@ const PublicRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof PublicRouteWithChildren
   '/login': typeof PublicLoginRoute
+  '/register': typeof PublicRegisterRoute
   '/$userId': typeof UserIdIndexRoute
   '/': typeof PublicIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof PublicLoginRoute
+  '/register': typeof PublicRegisterRoute
   '/$userId': typeof UserIdIndexRoute
   '/': typeof PublicIndexRoute
 }
@@ -108,16 +126,23 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_public': typeof PublicRouteWithChildren
   '/_public/login': typeof PublicLoginRoute
+  '/_public/register': typeof PublicRegisterRoute
   '/$userId/': typeof UserIdIndexRoute
   '/_public/': typeof PublicIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/$userId' | '/'
+  fullPaths: '' | '/login' | '/register' | '/$userId' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/$userId' | '/'
-  id: '__root__' | '/_public' | '/_public/login' | '/$userId/' | '/_public/'
+  to: '/login' | '/register' | '/$userId' | '/'
+  id:
+    | '__root__'
+    | '/_public'
+    | '/_public/login'
+    | '/_public/register'
+    | '/$userId/'
+    | '/_public/'
   fileRoutesById: FileRoutesById
 }
 
@@ -149,11 +174,16 @@ export const routeTree = rootRoute
       "filePath": "_public.tsx",
       "children": [
         "/_public/login",
+        "/_public/register",
         "/_public/"
       ]
     },
     "/_public/login": {
       "filePath": "_public/login.tsx",
+      "parent": "/_public"
+    },
+    "/_public/register": {
+      "filePath": "_public/register.tsx",
       "parent": "/_public"
     },
     "/$userId/": {
