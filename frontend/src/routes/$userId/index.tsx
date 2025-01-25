@@ -99,8 +99,8 @@ const rows: Row[] = [
 
 function RouteComponent() {
   return (
-    <div className='mt-16 bg-secondary/30 flex-grow'>
-      <div className='h-20 bg-background drop-shadow'></div>
+    <div className='mt-16 bg-secondary/30 grow'>
+      <div className='h-20 bg-background drop-shadow-sm'></div>
       <div className='container mx-auto'>
         <p className='text-muted-foreground text-2xl py-6'>History ({6})</p>
         <DataTable headers={headers} rows={rows} />

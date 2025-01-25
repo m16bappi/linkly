@@ -18,7 +18,7 @@ function RouteComponent() {
         <div className='grid gap-10'>
           <div className='grid gap-2 text-center'>
             <div className='font-extrabold text-3xl'>
-              <span className='bg-gradient-to-r from-blue-500 via-rose-400 to-blue-500 text-transparent bg-clip-text'>
+              <span className='bg-linear-to-r from-blue-500 via-rose-400 to-blue-500 text-transparent bg-clip-text'>
                 Login and start shortening
               </span>
             </div>

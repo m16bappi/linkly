@@ -103,7 +103,7 @@ function RouteComponent() {
     <>
       <div className='text-center mt-20'>
         <div className='text-7xl font-extrabold'>
-          <span className='bg-clip-text text-transparent bg-gradient-to-r from-blue-700 via-rose-400 to-blue-700'>
+          <span className='bg-clip-text text-transparent bg-linear-to-r from-blue-700 via-rose-400 to-blue-700'>
             Shorten Your Loooong Links :)
           </span>
         </div>

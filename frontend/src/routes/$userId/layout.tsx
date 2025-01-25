@@ -17,7 +17,7 @@ function RouteComponent() {
         <ProfileDropdown />
       </div>
 
-      <div className='flex-grow w-full flex flex-col'>
+      <div className='grow w-full flex flex-col'>
         <Outlet />
       </div>
     </div>
