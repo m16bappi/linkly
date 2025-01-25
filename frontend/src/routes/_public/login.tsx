@@ -13,8 +13,8 @@ function RouteComponent() {
   const navigator = Route.useNavigate()
 
   return (
-    <div className='max-w-6xl w-full p-14 bg-primary-foreground grid grid-cols-2 gap-2 rounded-sm mt-52 shadow-md self-center'>
-      <div className='grid-cols-1'>
+    <div className='max-w-6xl w-full bg-primary-foreground grid grid-cols-2 gap-2 rounded-sm mt-50 shadow-md self-center'>
+      <div className='grid-cols-1 px-12 py-20'>
         <div className='grid gap-10'>
           <div className='grid gap-2 text-center'>
             <div className='font-extrabold text-3xl'>
@@ -74,7 +74,7 @@ function RouteComponent() {
             >
               Login
             </Button>
-            <div className='text-sm text-muted-foreground'>
+            <div className='text-xs text-muted-foreground'>
               By logging in with an account, you agree to Bitly's{' '}
               <span className='underline underline-offset-2'>
                 Terms of Service, Privacy Policy
@@ -85,7 +85,9 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      <div className='grid-cols-1 bg-red-100'>right</div>
+      <div className='grid-cols-1'>
+        <img src='/login-right.png' className='h-full w-full' />
+      </div>
     </div>
   )
 }

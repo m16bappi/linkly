@@ -115,8 +115,8 @@ function RouteComponent() {
           <ShortnerInput />
           <div className='mt-5'>
             <p className='text-muted-foreground'>
-              You can create <span className='text-rose-400'>05 </span>links in
-              public mode. Register Now to enjoy Unlimited usages.
+              You can create <span className='text-rose-400'>05 </span>shorten
+              links in public mode. Register Now to enjoy Unlimited.
             </p>
           </div>
         </div>
