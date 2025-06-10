@@ -1,15 +1,24 @@
+import { z } from 'zod'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { EyeClosed, AtSign, IdCard, PackagePlus } from 'lucide-react'
+import { AtSign, IdCard, PackagePlus } from 'lucide-react'
 
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Form, FormInput } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
+import useZodForm from '@/hooks/use-form'
 
 export const Route = createFileRoute('/_public/register')({
   component: RouteComponent,
 })
 
+const schema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, '6 characters required'),
+  confirmPassword: z.string().min(6, '6 characters required'),
+})
+
 function RouteComponent() {
+  const form = useZodForm({ schema })
   const navigator = Route.useNavigate()
 
   return (
@@ -23,7 +32,7 @@ function RouteComponent() {
               </span>
             </div>
             <p>
-              Have account?
+              Have a account?
               <Link to='/login' className='ml-2 underline underline-offset-4'>
                 Login
               </Link>
@@ -34,62 +43,49 @@ function RouteComponent() {
               Or continue with
             </span>
           </div>
-          <div className='grid gap-6'>
-            <div className='grid gap-2'>
-              <Label htmlFor='name' className='ml-5'>
-                Name
-              </Label>
-              <Input
-                type='name'
-                placeholder='Enter your name'
-                className='border-[3px] h-14 rounded-full'
+          <Form
+            onSubmit={() =>
+              navigator({ to: '/$userId', params: { userId: 'me' } })
+            }
+            form={form}
+          >
+            <div className='grid gap-6'>
+              <FormInput
+                control={form.control}
+                name='name'
+                label='Name'
+                placeholder='John Doe'
                 endIcon={IdCard}
               />
-            </div>
-            <div className='grid gap-2'>
-              <Label htmlFor='email' className='ml-5'>
-                Email
-              </Label>
-              <Input
-                type='email'
-                placeholder='Enter your email'
-                className='border-[3px] h-14 rounded-full'
+              <FormInput
+                control={form.control}
+                name='email'
+                label='Email'
+                placeholder='example@email.com'
                 endIcon={AtSign}
+                type='email'
               />
-            </div>
-            <div className='grid grid-cols-2 gap-2'>
-              <div className='grid gap-2'>
-                <Label htmlFor='password' className='ml-5'>
-                  Password
-                </Label>
-                <Input
+              <div className='grid grid-cols-2 gap-2 place-items-start'>
+                <FormInput
+                  control={form.control}
+                  label='Passaword'
+                  name='password'
+                  type='password'
+                  placeholder='Password'
+                />
+                <FormInput
+                  control={form.control}
+                  label='Confirm Password'
+                  name='confirmPassword'
                   type='password'
                   placeholder='Enter your password'
-                  className='border-[3px] h-14 rounded-full'
-                  endIcon={EyeClosed}
                 />
               </div>
-              <div className='grid gap-2'>
-                <Label htmlFor='confirm-password' className='ml-5'>
-                  Confirm Password
-                </Label>
-                <Input
-                  type='confirm-password'
-                  placeholder='Confirm password'
-                  className='border-[3px] h-14 rounded-full'
-                  endIcon={EyeClosed}
-                />
-              </div>
+              <Button size='lg' type='submit'>
+                Register Now <PackagePlus />
+              </Button>
             </div>
-            <Button
-              size='lg'
-              onClick={() =>
-                navigator({ to: '/$userId', params: { userId: 'me' } })
-              }
-            >
-              Register Now <PackagePlus />
-            </Button>
-          </div>
+          </Form>
         </div>
       </div>
       <div className='grid-cols-1'>

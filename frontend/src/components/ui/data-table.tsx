@@ -1,4 +1,4 @@
-import { Table, TableHeader, TableRow, TableBody, TableCell } from './ui/table'
+import { Table, TableHeader, TableRow, TableBody, TableCell } from './table'
 
 export type Header<TData> = {
   id: keyof TData
@@ -26,7 +26,7 @@ function DataTable<TData>({ rows, headers }: DataTableProps<TData>) {
         </TableHeader>
         <TableBody>
           {rows.map((row, idx) => (
-            <TableRow key={idx} className='bg-background'>
+            <TableRow key={idx} className='bg-background hover:bg-muted/80'>
               {headers.map((cell) => (
                 <TableCell
                   key={String(cell.id)}

@@ -1,15 +1,22 @@
-import { EyeClosed, AtSign } from 'lucide-react'
-
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { z } from 'zod'
+import { AtSign } from 'lucide-react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+
+import useZodForm from '@/hooks/use-form'
 import { Button } from '@/components/ui/button'
+import { Form, FormInput } from '@/components/ui/form'
 
 export const Route = createFileRoute('/_public/login')({
   component: RouteComponent,
 })
 
+const schema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'At least 6 characters long'),
+})
+
 function RouteComponent() {
+  const form = useZodForm({ schema })
   const navigator = Route.useNavigate()
 
   return (
@@ -37,43 +44,34 @@ function RouteComponent() {
               Or continue with
             </span>
           </div>
-          <div className='grid gap-6'>
-            <div className='grid gap-2'>
-              <Label htmlFor='email' className='ml-5'>
-                Email
-              </Label>
-              <Input
-                type='email'
-                placeholder='Enter your email'
-                className='border-[3px] h-14 rounded-full'
-                endIcon={AtSign}
-              />
-            </div>
-            <div className='grid gap-2'>
-              <Label htmlFor='password' className='ml-5'>
-                Password
-              </Label>
-              <Input
-                type='password'
-                placeholder='Enter your password'
-                className='border-[3px] h-14 rounded-full'
-                endIcon={EyeClosed}
-              />
-            </div>
+          <Form
+            form={form}
+            onSubmit={() =>
+              navigator({ to: '/$userId', params: { userId: 'me' } })
+            }
+            className='grid gap-6'
+          >
+            <FormInput
+              control={form.control}
+              name='email'
+              label='Email'
+              placeholder='example@email.com'
+              endIcon={AtSign}
+            />
+            <FormInput
+              control={form.control}
+              name='password'
+              label='Password'
+              placeholder='Enter your password'
+              type='password'
+            />
             <Link
               to='/login'
               className='underline underline-offset-4 text-right'
             >
               Forgot your password?
             </Link>
-            <Button
-              size='lg'
-              onClick={() =>
-                navigator({ to: '/$userId', params: { userId: 'me' } })
-              }
-            >
-              Login
-            </Button>
+            <Button size='lg'>Login</Button>
             <div className='text-xs text-muted-foreground'>
               By logging in with an account, you agree to Bitly's{' '}
               <span className='underline underline-offset-2'>
@@ -82,7 +80,7 @@ function RouteComponent() {
               and Acceptable{' '}
               <span className='underline underline-offset-2'>User Policy</span>.
             </div>
-          </div>
+          </Form>
         </div>
       </div>
       <div className='grid-cols-1'>
